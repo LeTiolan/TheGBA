@@ -127,12 +127,11 @@ div#menu {
     height: 100%; /* Expands to cover the entire height of the screen */
     left: 0;
     top: 0;
-    background-color: #f4f5f8; /* Exactly matches your Quartz theme background color */
+    background-color: rgba(0, 0, 0, 0.4); /* Dark translucent glass over the game */
     opacity: 0; /* Hidden by default */
     pointer-events: none;
     transition: opacity 0.3s ease; /* Smooth fade-in effect */
 }
-
 /* This triggers the solid background when you click your sandwich button */
 .menu-active div#menu {
     opacity: 1;
