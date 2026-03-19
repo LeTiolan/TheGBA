@@ -220,13 +220,24 @@
               const file = event.target.files[0];
               if (!file) return;
 
-              // --- THE MISSING LINK: This actually starts the game ---
+              // THIS RUNS THE GAME:
               attachROM(file);
 
               // 1. Make the Play button flash green
               document.getElementById('play').classList.add('flash-green');
 
-              // 2. Auto-Fullscreen
+              // 2. Wake up the sound engine immediately
+              const soundBox = document.getElementById('sound');
+              if (soundBox && soundBox.checked) {
+                  soundBox.dispatchEvent(new Event('change'));
+              }
+          });
+
+     // Stop flashing, go Fullscreen, and close menu when Play is clicked
+          document.getElementById('play').addEventListener('click', function() {
+              this.classList.remove('flash-green');
+              
+              // TRIGGER FULLSCREEN HERE INSTEAD
               const gameContainer = document.getElementById('container');
               if (gameContainer.requestFullscreen) {
                   gameContainer.requestFullscreen();
@@ -234,16 +245,6 @@
                   gameContainer.webkitRequestFullscreen();
               }
 
-              // 3. Wake up the sound engine
-              const soundBox = document.getElementById('sound');
-              if (soundBox && soundBox.checked) {
-                  soundBox.dispatchEvent(new Event('change'));
-              }
-          });
-
-     // Stop flashing and close menu when Play is clicked
-          document.getElementById('play').addEventListener('click', function() {
-              this.classList.remove('flash-green');
               document.getElementById('container').classList.remove('menu-active'); 
 
               // Automatically "wake up" the sound engine
