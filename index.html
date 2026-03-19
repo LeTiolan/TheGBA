@@ -311,14 +311,25 @@ function loadLibraryMenu() {
         // Clear out the current list (this removes the "No games" placeholder)
         libraryList.innerHTML = '';
 
+        // --- NEW: FILTER OUT DUPLICATES ---
+        const uniqueGames = [];
+        const seenNames = new Set();
+
+        games.forEach(game => {
+            if (!seenNames.has(game.name)) {
+                seenNames.add(game.name);
+                uniqueGames.push(game);
+            }
+        });
+
         // If the library is empty, put the placeholder message back
-        if (games.length === 0) {
+        if (uniqueGames.length === 0) {
             libraryList.innerHTML = '<li id="empty-library-msg" style="color: #888; cursor: default;">No games saved yet</li>';
             return;
         }
 
-        // Loop through every game found in the database and create a menu item
-        games.forEach(game => {
+        // Loop through our NEW CLEAN LIST and create the menu items
+        uniqueGames.forEach(game => {
             const li = document.createElement('li');
             li.textContent = game.name;
 
