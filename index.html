@@ -225,9 +225,10 @@
               }
           });
 
-          // Stop flashing when Play is clicked
+         // Stop flashing and close menu when Play is clicked
           document.getElementById('play').addEventListener('click', function() {
               this.classList.remove('flash-green');
+              document.getElementById('container').classList.remove('menu-active'); // This closes the menu!
           });
 			// Toggle Hamburger Menu and Touch Controls
           document.getElementById('hamburger-menu').addEventListener('click', function() {
