@@ -387,18 +387,17 @@ function playGameFromLibrary(fileData) {
     fileInput.files = dataTransfer.files;
 
     // Trigger the 'change' event so the emulator starts loading the ROM
+    // This will ALSO trigger the green flashing play button automatically!
     const event = new Event('change');
     fileInput.dispatchEvent(event);
     
-    // --- NEW: TRIGGER SOUND AUTOMATICALLY ---
-    // This tells the browser "the user clicked something, it's safe to start audio"
+    // Trigger sound
     const soundBox = document.getElementById('sound');
     if (soundBox && soundBox.checked) {
         soundBox.dispatchEvent(new Event('change'));
     }
 
-    // Automatically hide the menu
-    document.getElementById('container').classList.remove('menu-active');
+    // We removed the automatic menu-closing line here so you can hit Play yourself!
 }
         </script>
     </body>
