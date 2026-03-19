@@ -293,6 +293,62 @@
                   // loadLibraryMenu(); <-- This will update the visual menu list in our final step!
               };
           });
+			// ==========================================
+// RENDER LIBRARY MENU & PLAY SAVED GAMES
+// ==========================================
+function loadLibraryMenu() {
+    // Double-check that the database is actually ready
+    if (!db) return;
+
+    const transaction = db.transaction(["games"], "readonly");
+    const store = transaction.objectStore("games");
+    const request = store.getAll(); // Fetches all saved games from IndexedDB
+
+    request.onsuccess = function(event) {
+        const games = event.target.result;
+        const libraryList = document.getElementById('game-library-list');
+
+        // Clear out the current list (this removes the "No games" placeholder)
+        libraryList.innerHTML = '';
+
+        // If the library is empty, put the placeholder message back
+        if (games.length === 0) {
+            libraryList.innerHTML = '<li id="empty-library-msg" style="color: #888; cursor: default;">No games saved yet</li>';
+            return;
+        }
+
+        // Loop through every game found in the database and create a menu item
+        games.forEach(game => {
+            const li = document.createElement('li');
+            li.textContent = game.name;
+
+            // When this specific game is clicked in the menu, load it up!
+            li.addEventListener('click', function(e) {
+                // Prevent the click from triggering any sub-menu toggles
+                e.stopPropagation(); 
+                playGameFromLibrary(game.fileData);
+            });
+
+            libraryList.appendChild(li);
+        });
+    };
+}
+
+function playGameFromLibrary(fileData) {
+    // We use a modern trick with DataTransfer to spoof a file upload.
+    // This makes your existing 'rom_load' glue scripts think the user just uploaded it normally!
+    const fileInput = document.getElementById('rom_load');
+    const dataTransfer = new DataTransfer();
+    dataTransfer.items.add(fileData);
+    fileInput.files = dataTransfer.files;
+
+    // Trigger the 'change' event manually so the emulator catches it
+    const event = new Event('change');
+    fileInput.dispatchEvent(event);
+    
+    // Automatically hide the menu so the user can start playing immediately
+    document.getElementById('container').classList.remove('menu-active');
+}
         </script>
     </body>
 </html>
