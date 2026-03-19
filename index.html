@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html> -->
 <html>
     <head>
         <title>IodineGBA</title>
@@ -222,16 +222,23 @@
               document.getElementById('play').classList.add('flash-green');
           });
 
-   // Stop flashing, go Fullscreen, and close menu when Play is clicked
+ // Stop flashing, go Fullscreen, force sound ON, and close menu when Play is clicked
           document.getElementById('play').addEventListener('click', function() {
               this.classList.remove('flash-green');
               
-              // Trigger Fullscreen ONLY when they hit play
+              // Trigger Fullscreen
               const gameContainer = document.getElementById('container');
               if (gameContainer.requestFullscreen) {
                   gameContainer.requestFullscreen();
               } else if (gameContainer.webkitRequestFullscreen) { 
                   gameContainer.webkitRequestFullscreen();
+              }
+
+              // FORCE SOUND ON
+              const soundBox = document.getElementById('sound');
+              if (soundBox) {
+                  soundBox.checked = true; // Visually check the box
+                  soundBox.dispatchEvent(new Event('change')); // Tell emulator to start audio
               }
 
               // Close the menu
