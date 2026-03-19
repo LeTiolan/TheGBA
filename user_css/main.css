@@ -238,9 +238,9 @@ li.hide { display: none !important; }
  */
 #hamburger-menu {
     position: absolute;
-    top: 0px; /* Snapped exactly to the top */
-    left: 0px; /* Snapped exactly to the left */
-    z-index: 100; /* Keep it above everything */
+    top: 0px; 
+    left: 0px; 
+    z-index: 9999; /* Changed from 100 to 9999 so it beats the game canvas */
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
@@ -250,7 +250,7 @@ li.hide { display: none !important; }
     height: 3.5em;
     border: 2px solid rgba(255, 255, 255, 0.8);
     background: linear-gradient(145deg, #ffffff, #d8dbe2);
-    border-radius: 0 0 20px 0; /* Square top-left, bubbly bottom-right */
+    border-radius: 0 0 20px 0; 
     box-shadow: 4px 4px 8px rgba(166, 171, 189, 0.4);
     cursor: pointer;
     transition: all 0.1s ease-in-out;
