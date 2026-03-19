@@ -217,18 +217,12 @@
 
          // Auto-Fullscreen and Play Button Flash when a game is loaded
     // File Picker Listener (Starts game via glue code)
-          document.getElementById('rom_load').addEventListener('change', function() {
+      document.getElementById('rom_load').addEventListener('change', function() {
               // 1. Make the Play button flash green
               document.getElementById('play').classList.add('flash-green');
-
-              // 2. Wake up the sound engine immediately
-              const soundBox = document.getElementById('sound');
-              if (soundBox && soundBox.checked) {
-                  soundBox.dispatchEvent(new Event('change'));
-              }
           });
 
-    // Stop flashing, go Fullscreen, and close menu when Play is clicked
+   // Stop flashing, go Fullscreen, and close menu when Play is clicked
           document.getElementById('play').addEventListener('click', function() {
               this.classList.remove('flash-green');
               
@@ -242,12 +236,6 @@
 
               // Close the menu
               document.getElementById('container').classList.remove('menu-active'); 
-
-              // Ensure sound is awake
-              const soundBox = document.getElementById('sound');
-              if (soundBox && soundBox.checked) {
-                  soundBox.dispatchEvent(new Event('change'));
-              }
           });
 			// Toggle Hamburger Menu and Touch Controls
           document.getElementById('hamburger-menu').addEventListener('click', function() {
@@ -390,12 +378,6 @@ function playGameFromLibrary(fileData) {
     // This will ALSO trigger the green flashing play button automatically!
     const event = new Event('change');
     fileInput.dispatchEvent(event);
-    
-    // Trigger sound
-    const soundBox = document.getElementById('sound');
-    if (soundBox && soundBox.checked) {
-        soundBox.dispatchEvent(new Event('change'));
-    }
 
     // We removed the automatic menu-closing line here so you can hit Play yourself!
 }
