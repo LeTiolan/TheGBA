@@ -216,7 +216,13 @@
           });
 
          // Auto-Fullscreen and Play Button Flash when a game is loaded
-     document.getElementById('rom_load').addEventListener('change', function() {
+    document.getElementById('rom_load').addEventListener('change', function(event) {
+              const file = event.target.files[0];
+              if (!file) return;
+
+              // --- THE MISSING LINK: This actually starts the game ---
+              attachROM(file);
+
               // 1. Make the Play button flash green
               document.getElementById('play').classList.add('flash-green');
 
@@ -226,11 +232,9 @@
                   gameContainer.requestFullscreen();
               } else if (gameContainer.webkitRequestFullscreen) { 
                   gameContainer.webkitRequestFullscreen();
-              } else if (gameContainer.msRequestFullscreen) { 
-                  gameContainer.msRequestFullscreen();
               }
 
-              // 3. Wake up the sound engine immediately
+              // 3. Wake up the sound engine
               const soundBox = document.getElementById('sound');
               if (soundBox && soundBox.checked) {
                   soundBox.dispatchEvent(new Event('change'));
