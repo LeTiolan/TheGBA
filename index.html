@@ -161,9 +161,9 @@
                     <li>
                         Volume
                         <ul>
-                            <li>
-                                <input type="range" id="volume">
-                            </li>
+                           <li>
+    <input type="checkbox" id="sound" checked="checked"> Sound
+</li>
                         </ul>
                     </li>
                     <li id="saves_menu">
@@ -218,6 +218,8 @@
          // Auto-Fullscreen and Play Button Flash when a game is loaded
           document.getElementById('rom_load').addEventListener('change', function() {
               // 1. Make the Play button flash green
+            document.getElementById('rom_load').addEventListener('change', function() {
+              // 1. Make the Play button flash green
               document.getElementById('play').classList.add('flash-green');
 
               // 2. Auto-Fullscreen
@@ -228,6 +230,13 @@
                   gameContainer.webkitRequestFullscreen();
               } else if (gameContainer.msRequestFullscreen) { 
                   gameContainer.msRequestFullscreen();
+              }
+
+              // 3. NEW: Wake up the sound engine immediately
+              // This ensures sound starts working the moment you choose a file
+              const soundBox = document.getElementById('sound');
+              if (soundBox && soundBox.checked) {
+                  soundBox.dispatchEvent(new Event('change'));
               }
           });
 
@@ -373,18 +382,24 @@ function loadLibraryMenu() {
     };
 }
 function playGameFromLibrary(fileData) {
-    // We use a modern trick with DataTransfer to spoof a file upload.
-    // This makes your existing 'rom_load' glue scripts think the user just uploaded it normally!
+    // Standard logic to load the file into the emulator
     const fileInput = document.getElementById('rom_load');
     const dataTransfer = new DataTransfer();
     dataTransfer.items.add(fileData);
     fileInput.files = dataTransfer.files;
 
-    // Trigger the 'change' event manually so the emulator catches it
+    // Trigger the 'change' event so the emulator starts loading the ROM
     const event = new Event('change');
     fileInput.dispatchEvent(event);
     
-    // Automatically hide the menu so the user can start playing immediately
+    // --- NEW: TRIGGER SOUND AUTOMATICALLY ---
+    // This tells the browser "the user clicked something, it's safe to start audio"
+    const soundBox = document.getElementById('sound');
+    if (soundBox && soundBox.checked) {
+        soundBox.dispatchEvent(new Event('change'));
+    }
+
+    // Automatically hide the menu
     document.getElementById('container').classList.remove('menu-active');
 }
         </script>
