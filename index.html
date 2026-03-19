@@ -264,6 +264,35 @@
           dbRequest.onerror = function(event) {
               console.error("Database error: ", event.target.error);
           };
+			// ==========================================
+          // SAVE GAME TO LIBRARY WHEN LOADED
+          // ==========================================
+          document.getElementById('rom_load').addEventListener('change', function(event) {
+              const file = event.target.files[0];
+              if (!file) return;
+
+              // Clean up the file name (removes the .gba or .zip at the end)
+              let cleanName = file.name.replace(/\.[^/.]+$/, "");
+              
+              // Apply your exact formatting: 🎮 (name of game)
+              let displayName = "🎮 " + cleanName;
+
+              // Open the database and save the file
+              const transaction = db.transaction(["games"], "readwrite");
+              const store = transaction.objectStore("games");
+              
+              const gameRecord = {
+                  name: displayName,
+                  fileData: file // Saves the actual playable file to your browser's memory
+              };
+
+              const request = store.put(gameRecord);
+
+              request.onsuccess = function() {
+                  console.log(displayName + " was saved to the library!");
+                  // loadLibraryMenu(); <-- This will update the visual menu list in our final step!
+              };
+          });
         </script>
     </body>
 </html>
