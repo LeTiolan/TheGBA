@@ -233,21 +233,31 @@
             <span class="message" id="tempMessage"></span>
         </div>
 		<script>
-  window.addEventListener('load', function() {
-    fetch('gba_bios.bin')
-      .then(response => {
-        if (!response.ok) throw new Error("BIOS file not found");
-        return response.arrayBuffer();
-      })
-      .then(buffer => {
-        // Convert the file into data the emulator can read
-        var biosView = new Uint8Array(buffer);
-        // Attach it to the IodineGBA core
-        IodineGUI.Iodine.attachBIOS(biosView);
-        console.log("Open-source BIOS loaded successfully!");
-      })
-      .catch(error => console.error("Error loading BIOS:", error));
-  });
-</script>
+          window.addEventListener('load', function() {
+            fetch('gba_bios.bin')
+              .then(response => {
+                if (!response.ok) throw new Error("BIOS file not found");
+                return response.arrayBuffer();
+              })
+              .then(buffer => {
+                var biosView = new Uint8Array(buffer);
+                IodineGUI.Iodine.attachBIOS(biosView);
+                console.log("Open-source BIOS loaded successfully!");
+              })
+              .catch(error => console.error("Error loading BIOS:", error));
+          });
+
+          // Auto-Fullscreen when a game is loaded
+          document.getElementById('rom_load').addEventListener('change', function() {
+              const gameContainer = document.getElementById('container');
+              if (gameContainer.requestFullscreen) {
+                  gameContainer.requestFullscreen();
+              } else if (gameContainer.webkitRequestFullscreen) { 
+                  gameContainer.webkitRequestFullscreen();
+              } else if (gameContainer.msRequestFullscreen) { 
+                  gameContainer.msRequestFullscreen();
+              }
+          });
+        </script>
     </body>
 </html>
