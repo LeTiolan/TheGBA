@@ -105,7 +105,7 @@
                                 <input type="checkbox" id="offthread-gpu" checked="checked"> GPU off-thread
                             </li>
                             <li>
-                                <input type="checkbox" id="sound"> Sound
+                                <input type="checkbox" id="sound" checked="checked"> Sound
                             </li>
                             
                             <li>
@@ -209,8 +209,12 @@
               .catch(error => console.error("Error loading BIOS:", error));
           });
 
-          // Auto-Fullscreen when a game is loaded
+         // Auto-Fullscreen and Play Button Flash when a game is loaded
           document.getElementById('rom_load').addEventListener('change', function() {
+              // 1. Make the Play button flash green
+              document.getElementById('play').classList.add('flash-green');
+
+              // 2. Auto-Fullscreen
               const gameContainer = document.getElementById('container');
               if (gameContainer.requestFullscreen) {
                   gameContainer.requestFullscreen();
@@ -219,6 +223,11 @@
               } else if (gameContainer.msRequestFullscreen) { 
                   gameContainer.msRequestFullscreen();
               }
+          });
+
+          // Stop flashing when Play is clicked
+          document.getElementById('play').addEventListener('click', function() {
+              this.classList.remove('flash-green');
           });
 			// Toggle Hamburger Menu and Touch Controls
           document.getElementById('hamburger-menu').addEventListener('click', function() {
