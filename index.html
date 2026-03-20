@@ -442,41 +442,54 @@ function simulateKey(keyCode, isKeyDown) {
     document.dispatchEvent(e);
 }
 
+// Add this state tracker just ABOVE the pollGamepads function
+let axisState = { up: false, down: false, left: false, right: false };
+
 function pollGamepads() {
     const gamepads = navigator.getGamepads ? navigator.getGamepads() : [];
     const pad = gamepads[0]; 
     
     if (pad) {
+        // --- 1. EXISTING BUTTON LOGIC (A, B, Start, etc.) ---
         for (let i = 0; i < pad.buttons.length; i++) {
             const isPressed = pad.buttons[i].pressed;
-            
             if (isPressed !== gamepadState[i]) {
                 gamepadState[i] = isPressed; 
-                
                 if (isPressed) { 
                     if (isRemapping) {
-                        // Clear old bindings for this GBA key
                         for (let key in gamepadBindings) {
                             if (gamepadBindings[key] === remapGbaKey) delete gamepadBindings[key];
                         }
-                        // Save the new binding!
                         gamepadBindings[i] = remapGbaKey;
                         localStorage.setItem('customGamepadBindings', JSON.stringify(gamepadBindings));
-                        
                         remapButtonElement.innerText = "Mapped!";
                         isRemapping = false;
                         remapGbaKey = null;
                         remapButtonElement = null;
                     } else if (gamepadBindings[i]) {
-                        simulateKey(gamepadBindings[i], true); // Play game
+                        simulateKey(gamepadBindings[i], true);
                     }
-                } else { 
-                    if (!isRemapping && gamepadBindings[i]) {
-                        simulateKey(gamepadBindings[i], false); // Release button
-                    }
+                } else if (!isRemapping && gamepadBindings[i]) {
+                    simulateKey(gamepadBindings[i], false);
                 }
             }
         }
+
+        // --- 2. NEW DPAD/JOYSTICK TRANSLATOR ---
+        // Most controllers use Axis 0/1 for Stick and Axis 9 or specific Hat switches for D-Pad
+        const x = pad.axes[0]; 
+        const y = pad.axes[1];
+        const threshold = 0.5;
+
+        const moveLeft = x < -threshold || (pad.buttons[14] && pad.buttons[14].pressed);
+        const moveRight = x > threshold || (pad.buttons[15] && pad.buttons[15].pressed);
+        const moveUp = y < -threshold || (pad.buttons[12] && pad.buttons[12].pressed);
+        const moveDown = y > threshold || (pad.buttons[13] && pad.buttons[13].pressed);
+
+        if (moveLeft !== axisState.left) { simulateKey(37, moveLeft); axisState.left = moveLeft; }
+        if (moveRight !== axisState.right) { simulateKey(39, moveRight); axisState.right = moveRight; }
+        if (moveUp !== axisState.up) { simulateKey(38, moveUp); axisState.up = moveUp; }
+        if (moveDown !== axisState.down) { simulateKey(40, moveDown); axisState.down = moveDown; }
     }
     requestAnimationFrame(pollGamepads);
 }
