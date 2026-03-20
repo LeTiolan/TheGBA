@@ -246,6 +246,9 @@
           document.getElementById('play').addEventListener('click', function() {
               this.classList.remove('flash-green');
               
+              // ADD THIS NEW LINE:
+              syncSmoothing();
+              
               // Trigger Fullscreen
               const gameContainer = document.getElementById('container');
               if (gameContainer.requestFullscreen) {
