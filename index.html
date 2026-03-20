@@ -271,18 +271,24 @@
           dbRequest.onerror = function(event) {
               console.error("Database error: ", event.target.error);
           };
-			// ==========================================
+		// ==========================================
           // SAVE GAME TO LIBRARY WHEN LOADED
           // ==========================================
           document.getElementById('rom_load').addEventListener('change', function(event) {
               const file = event.target.files[0];
               if (!file) return;
 
-              // Clean up the file name (removes the .gba or .zip at the end)
+              // 1. Remove the file extension (.gba, .zip)
               let cleanName = file.name.replace(/\.[^/.]+$/, "");
               
-            // Apply your exact formatting: 🎮(name of game)
-              let displayName = "🎮(" + cleanName + ")";
+              // 2. Remove anything inside parentheses or brackets (like region tags or version numbers)
+              cleanName = cleanName.replace(/\s*\(.*?\)/g, "").replace(/\s*\[.*?\]/g, "");
+
+              // 3. Keep only letters, numbers, spaces, hyphens, and apostrophes
+              cleanName = cleanName.replace(/[^a-zA-Z0-9\s\-\']/g, "").trim();
+
+              // 4. Add the emoji back, but with no parentheses around the game name!
+              let displayName = "🎮 " + cleanName;
 
               // Open the database and save the file
               const transaction = db.transaction(["games"], "readwrite");
