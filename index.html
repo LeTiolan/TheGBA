@@ -182,7 +182,7 @@
                         Volume
                         <ul>
                             <li>
-                               <input type="range" id="volume" min="0" max="1" step="0.05" value="1" style="width: 100%;">
+                               <input type="range" id="volume" min="0" max="100" step="1" value="100" style="width: 100%;">
                             </li>
                         </ul>
                     </li>
@@ -532,14 +532,6 @@ syncSmoothing();
 // Brightness (10 Steps)
 brightnessSlider.addEventListener('input', () => {
     gbaCanvas.style.filter = `brightness(${brightnessSlider.value})`;
-});
-			// Volume Slider (0 to 100%)
-const volumeSlider = document.getElementById('volume');
-volumeSlider.addEventListener('input', function() {
-    // IodineGBA expects a volume value between 0.0 and 1.0
-    if (typeof IodineGUI !== 'undefined' && IodineGUI.Iodine) {
-        IodineGUI.Iodine.setVolume(this.value / 100);
-    }
 });
 
 // Fix Gamepad initialization
