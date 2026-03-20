@@ -354,36 +354,45 @@ li.hide { display: none !important; }
 .menu ul::-webkit-scrollbar-thumb:hover {
     background: rgba(166, 171, 189, 0.8); 
 }
-/*
-/*
-|-----------------------------------------
-| Thick Quartz Volume Fader
-|-----------------------------------------
+/* QUARTZ THICK SLIDER 
+   Designed for easy-use and premium feel
 */
 .quartz-slider {
     -webkit-appearance: none;
     width: 100%;
-    height: 20px; /* Made the track twice as thick */
+    height: 18px; /* Thick track */
     background: #e0e5ec;
-    border-radius: 10px; /* Smoother rounded edges */
+    border-radius: 12px;
     outline: none;
-    box-shadow: inset 3px 3px 6px rgba(166, 171, 189, 0.5), inset -3px -3px 6px rgba(255, 255, 255, 0.9);
+    /* Inset shadows create the "groove" look */
+    box-shadow: inset 3px 3px 6px rgba(166, 171, 189, 0.5), 
+                inset -3px -3px 6px rgba(255, 255, 255, 0.9);
+    cursor: pointer;
 }
 
+/* The "Knob" or Thumb */
 .quartz-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    width: 32px; /* Much larger, easier-to-grab button */
-    height: 32px;
+    width: 34px; /* Large diameter for easy grabbing */
+    height: 34px;
     border-radius: 50%;
     background: #f4f5f8;
     cursor: pointer;
-    box-shadow: 3px 3px 6px rgba(166, 171, 189, 0.6), -3px -3px 6px rgba(255, 255, 255, 0.9);
-    border: 1px solid rgba(0,0,0,0.05);
-    transition: transform 0.1s ease;
+    /* Outward shadows make the button "pop" up */
+    box-shadow: 3px 3px 8px rgba(166, 171, 189, 0.7), 
+                -3px -3px 8px rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(0,0,0,0.03);
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+/* Hover & Active Effects */
+.quartz-slider::-webkit-slider-thumb:hover {
+    background: #ffffff;
 }
 
 .quartz-slider::-webkit-slider-thumb:active {
-    transform: scale(0.95);
-    box-shadow: 1px 1px 3px rgba(166, 171, 189, 0.6), -1px -1px 3px rgba(255, 255, 255, 0.9);
+    transform: scale(0.92); /* Shrinks slightly when clicked */
+    box-shadow: 1px 1px 3px rgba(166, 171, 189, 0.6), 
+                -1px -1px 3px rgba(255, 255, 255, 0.9);
 }
