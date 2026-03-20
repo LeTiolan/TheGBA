@@ -516,14 +516,14 @@ smoothToggle.addEventListener('change', function() {
         gbaCanvas.classList.remove('textureSmooth');
     }
 });
-			// ==========================================
-// FINE-TUNED BRIGHTNESS (10 SETTINGS)
+		// ==========================================
+// BRIGHTNESS SLIDER (10 Levels)
 // ==========================================
 const brightnessSlider = document.getElementById('brightnessSlider');
 const gbaCanvas = document.getElementById('emulator_target');
 
 brightnessSlider.addEventListener('input', function() {
-    // Applies the selected setting (0, 0.2, 0.4... up to 2.0)
+    // Moves in 10% increments because of the 0.2 step in your HTML
     gbaCanvas.style.filter = `brightness(${this.value})`;
 });
         </script>
