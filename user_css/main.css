@@ -309,3 +309,30 @@ li.hide { display: none !important; }
 #game-library-list::-webkit-scrollbar-thumb:hover {
     background: rgba(166, 171, 189, 0.9); 
 }
+/*
+|-----------------------------------------
+| Controller Remap Buttons
+|-----------------------------------------
+*/
+.remap-btn {
+    background: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-family: inherit;
+    font-size: 0.85em;
+    color: #4a4a5a;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.remap-btn:hover {
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(40, 167, 69, 0.4);
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.remap-btn:active {
+    transform: scale(0.95);
+}
