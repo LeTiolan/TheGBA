@@ -177,17 +177,11 @@
                                 </ul>
                             </li>
                         </ul>
-                    </li>
-<li>
+                   <li>
                         Volume
-                        <ul style="display: flex; justify-content: center; padding: 20px 0;">
-                            <li style="padding: 0 !important;">
-                                <div id="vol-dial-container" title="Drag up or down to adjust" style="position: relative; width: 70px; height: 70px; border-radius: 50%; background: #e0e5ec; box-shadow: inset 5px 5px 10px rgba(166, 171, 189, 0.4), inset -5px -5px 10px rgba(255, 255, 255, 0.9); display: flex; align-items: center; justify-content: center; cursor: ns-resize; touch-action: none;">
-                                    <div id="vol-dial-knob" style="width: 50px; height: 50px; border-radius: 50%; background: #f4f5f8; box-shadow: 4px 4px 8px rgba(166, 171, 189, 0.4), -4px -4px 8px rgba(255, 255, 255, 0.9); transform: rotate(135deg);">
-                                        <div style="width: 8px; height: 8px; background: #28a745; border-radius: 50%; position: absolute; top: 6px; left: 21px; box-shadow: 0 0 5px #28a745;"></div>
-                                    </div>
-                                </div>
-                                <input type="range" id="volume" min="0" max="100" step="1" value="100" style="display: none;">
+                        <ul>
+                            <li style="padding: 10px 0;">
+                                <input type="range" id="volume" min="0" max="100" step="1" value="100" class="quartz-slider">
                             </li>
                         </ul>
                     </li>
@@ -547,62 +541,40 @@ window.addEventListener("gamepadconnected", () => {
         pollGamepads();
     }
 });
-			// ==========================================
-// CUSTOM VOLUME DIAL
-// ==========================================
-const dialContainer = document.getElementById('vol-dial-container');
-const dialKnob = document.getElementById('vol-dial-knob');
-const volumeInput = document.getElementById('volume');
-
-let isDialDragging = false;
-let currentVol = 100;
-let lastY = 0;
-
-function updateDialDisplay() {
-    // Map 0-100 volume to a perfect -135deg to +135deg rotation
-    const rotation = (currentVol / 100) * 270 - 135;
-    dialKnob.style.transform = `rotate(${rotation}deg)`;
-    volumeInput.value = Math.round(currentVol);
-    // Secretly alert the emulator's core script that the hidden slider moved
-    volumeInput.dispatchEvent(new Event('change'));
+/*
+|-----------------------------------------
+| Custom Quartz Volume Fader
+|-----------------------------------------
+*/
+.quartz-slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 10px;
+    background: #e0e5ec;
+    border-radius: 5px;
+    outline: none;
+    /* Inset shadow makes it look like a groove cut into the menu */
+    box-shadow: inset 2px 2px 5px rgba(166, 171, 189, 0.4), inset -2px -2px 5px rgba(255, 255, 255, 0.9);
 }
 
-// Mouse Events (PC)
-if (dialContainer) {
-    dialContainer.addEventListener('mousedown', (e) => {
-        isDialDragging = true;
-        lastY = e.clientY;
-    });
-    document.addEventListener('mouseup', () => isDialDragging = false);
-    document.addEventListener('mousemove', (e) => {
-        if (!isDialDragging) return;
-        currentVol -= (e.clientY - lastY); // Dragging UP increases volume
-        lastY = e.clientY;
-        
-        if (currentVol < 0) currentVol = 0;
-        if (currentVol > 100) currentVol = 100;
-        updateDialDisplay();
-    });
+.quartz-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #f4f5f8;
+    cursor: pointer;
+    /* Drop shadow makes the physical 'button' pop out */
+    box-shadow: 2px 2px 5px rgba(166, 171, 189, 0.6), -2px -2px 5px rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(0,0,0,0.05);
+    transition: transform 0.1s ease;
+}
 
-    // Touch Events (Mobile/Tablet)
-    dialContainer.addEventListener('touchstart', (e) => {
-        isDialDragging = true;
-        lastY = e.touches[0].clientY;
-        e.preventDefault(); // Prevents screen scrolling while turning knob
-    });
-    document.addEventListener('touchend', () => isDialDragging = false);
-    document.addEventListener('touchmove', (e) => {
-        if (!isDialDragging) return;
-        currentVol -= (e.touches[0].clientY - lastY);
-        lastY = e.touches[0].clientY;
-        
-        if (currentVol < 0) currentVol = 0;
-        if (currentVol > 100) currentVol = 100;
-        updateDialDisplay();
-    });
-
-    // Set default rotation on load
-    updateDialDisplay();
+.quartz-slider::-webkit-slider-thumb:active {
+    /* Slight press-in effect when clicking and dragging */
+    transform: scale(0.95);
+    box-shadow: 1px 1px 3px rgba(166, 171, 189, 0.6), -1px -1px 3px rgba(255, 255, 255, 0.9);
 }
         </script>
     </body>
