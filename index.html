@@ -113,6 +113,10 @@
                   <li>
                                 <input type="checkbox" id="sound"> Sound
                             </li>
+							<li>
+    Brightness: 
+    <input type="range" id="brightnessSlider" min="0" max="2" step="0.2" value="1" style="vertical-align: middle; width: 80px; float: right;">
+</li>
                             
                             <hr style="border-top: 1px solid rgba(0,0,0,0.1); margin: 15px 0;">
                            <li><strong>🎮 Controller Setup</strong></li>
@@ -511,6 +515,16 @@ smoothToggle.addEventListener('change', function() {
         // If unchecked, remove it (reverting to default pixelated look)
         gbaCanvas.classList.remove('textureSmooth');
     }
+});
+			// ==========================================
+// FINE-TUNED BRIGHTNESS (10 SETTINGS)
+// ==========================================
+const brightnessSlider = document.getElementById('brightnessSlider');
+const gbaCanvas = document.getElementById('emulator_target');
+
+brightnessSlider.addEventListener('input', function() {
+    // Applies the selected setting (0, 0.2, 0.4... up to 2.0)
+    gbaCanvas.style.filter = `brightness(${this.value})`;
 });
         </script>
     </body>
