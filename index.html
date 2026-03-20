@@ -538,15 +538,18 @@ window.addEventListener("gamepadconnected", () => {
     }
 });
 			// ==========================================
-// FORCE SAVE SYNC ON CLOSE
+// AUTO-SYNC & LEAVE WARNING
 // ==========================================
-// This forces the emulator to flush in-game saves to your browser's permanent storage 
-// right before you close the tab or refresh the page.
-window.addEventListener('beforeunload', function() {
+window.addEventListener('beforeunload', function (e) {
+    // 1. Force the emulator to sync the save data right now
     if (typeof IodineGUI !== 'undefined' && IodineGUI.Iodine) {
-        // Pausing forces the save data in RAM to commit to LocalStorage
-        IodineGUI.Iodine.pause(); 
+        IodineGUI.Iodine.pause();
     }
+    
+    // 2. Trigger the browser's native "Are you sure you want to leave?" popup.
+    // This freezes the tab, giving the emulator plenty of time to finish saving.
+    e.preventDefault();
+    e.returnValue = ''; 
 });
 
         </script>
