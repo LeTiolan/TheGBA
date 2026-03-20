@@ -484,6 +484,21 @@ function pollGamepads() {
 window.addEventListener("gamepadconnected", function(e) {
     pollGamepads(); 
 });
+			// ==========================================
+// SMOOTH SCALING TOGGLE logic
+// ==========================================
+const smoothToggle = document.getElementById('toggleSmoothScaling');
+const gbaCanvas = document.getElementById('emulator_target');
+
+smoothToggle.addEventListener('change', function() {
+    if (this.checked) {
+        // If checked, add the "Smooth" class
+        gbaCanvas.classList.add('textureSmooth');
+    } else {
+        // If unchecked, remove it (reverting to default pixelated look)
+        gbaCanvas.classList.remove('textureSmooth');
+    }
+});
         </script>
     </body>
 </html>
