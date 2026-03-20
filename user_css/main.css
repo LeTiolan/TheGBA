@@ -66,23 +66,21 @@ canvas {
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); 
     cursor: none;
 
-    /* SET OFF BY DEFAULT: Force Sharp/Pixelated rendering */
-    image-rendering: -webkit-optimize-contrast;
-    image-rendering: -o-crisp-edges;
-    image-rendering: -moz-crisp-edges;
-    image-rendering: crisp-edges;
-    image-rendering: pixelated;
-    -ms-interpolation-mode: nearest-neighbor;
-
+  image-rendering: -webkit-optimize-contrast !important;
+    image-rendering: -o-crisp-edges !important;
+    image-rendering: -moz-crisp-edges !important;
+    image-rendering: crisp-edges !important;
+    image-rendering: pixelated !important;
+    -ms-interpolation-mode: nearest-neighbor !important;
     /* Makes brightness changes feel smooth and high-quality */
     transition: filter 0.1s linear;
 }
 
 /* Applied via the "Smooth Scaling" checkbox */
 canvas.textureSmooth {
-    image-rendering: auto;
-    image-rendering: optimizeQuality;
-    -ms-interpolation-mode: bicubic;
+  image-rendering: auto !important;
+    image-rendering: optimizeQuality !important;
+    -ms-interpolation-mode: bicubic !important;
 }
 /*
 |-----------------------------------------
