@@ -246,6 +246,10 @@
           document.getElementById('play').addEventListener('click', function() {
               this.classList.remove('flash-green');
               
+              // --- ADD THIS LINE HERE ---
+              // This forces the HTML5 Canvas to stay pixelated, overriding the emulator's core code.
+              document.getElementById('emulator_target').getContext('2d').imageSmoothingEnabled = false;
+              
               // Trigger Fullscreen
               const gameContainer = document.getElementById('container');
               if (gameContainer.requestFullscreen) {
@@ -506,10 +510,25 @@ const smoothToggle = document.getElementById('toggleSmoothScaling');
 const brightnessSlider = document.getElementById('brightnessSlider');
 const gbaCanvas = document.getElementById('emulator_target');
 
-// Scaling Toggle
-smoothToggle.addEventListener('change', () => {
-    gbaCanvas.classList.toggle('textureSmooth', smoothToggle.checked);
-});
+// Scaling Toggle - Bulletproof Version
+function syncSmoothing() {
+    const isSmooth = smoothToggle.checked;
+    
+    // 1. Toggle the CSS class
+    gbaCanvas.classList.toggle('textureSmooth', isSmooth);
+    
+    // 2. Force the emulator's internal graphics engine to match
+    const ctx = gbaCanvas.getContext('2d');
+    if (ctx) {
+        ctx.imageSmoothingEnabled = isSmooth;
+    }
+}
+
+// Run when you click the checkbox
+smoothToggle.addEventListener('change', syncSmoothing);
+
+// Run ONCE immediately on page load (Fixes the "refresh" bug)
+syncSmoothing();
 
 // Brightness (10 Steps)
 brightnessSlider.addEventListener('input', () => {
